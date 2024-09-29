@@ -5,23 +5,26 @@ local script_details = {
 
 local url = script_details.debug and "http://localhost:6845" or "https://raw.githubusercontent.com/Jagod22/ALCATRAZ-PF/main"
 
-local out = script_details.debug and function(T, ...)
-    return warn("[ALCATRAZ - DEBUG]: "..T:format(...))
+local out = script_details.debug and function(formatString, ...)
+    return warn("[ALCATRAZ - DEBUG]: " .. formatString:format(...))
 end or function() end
 
 local function import(file)
     out("Importing File \"%s\"", file)
-    -- return task.spawn(function()
-    local x, a = pcall(function()
-        return loadstring(game:HttpGet(url .. file))()
+    local success, err = pcall(function()
+        local code = game:HttpGet(url .. file)
+        if code then
+            loadstring(code)()
+        else
+            warn("Failed to load content from URL: " .. url .. file)
+        end
     end)
-    if not x then
-        return warn('failed to import', file)
+
+    if not success then
+        warn("Failed to import '%s': %s", file, err)
     end
-    -- end)
 end
 
 getgenv().import = import
-getgenv().details = scriptdetails
-
+getgenv().details = script_details
 import('/main.lua')
