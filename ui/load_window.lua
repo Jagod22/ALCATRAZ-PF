@@ -109,7 +109,7 @@ do
 end
 
 local gun_sector = aimbot_tab:CreateSection("All Guns")
-    gun_sector:CreateToggle("enabled", false, function(state)
+    gun_sector:CreateToggle("enabled", true, function(state)
         
     game:GetService("StarterGui"):SetCore("SendNotification",{
     Title = "ALCATRAZ UI",
