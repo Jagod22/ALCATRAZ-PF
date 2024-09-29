@@ -1,4 +1,3 @@
-
 local function is_gunsight(t)
     local sightparts = gun_system.currentgun and gun_system.currentgun.aimsightdata
     if sightparts then
