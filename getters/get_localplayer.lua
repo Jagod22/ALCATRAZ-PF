@@ -1,15 +1,8 @@
-local localplayer
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
 
-for _, v in next, getgc(true) do
-    if type(v) == "table" then
-        if rawget(v, "setbasewalkspeed") then
-            localplayer = v
-        end
-    end
+if not localPlayer then
+    error("Failed to find LocalPlayer")
 end
 
-if not localplayer then
-    return error("failed to find localplayer")
-end
-
-getgenv().localplayer = localplayer
+getgenv().localplayer = localPlayer
