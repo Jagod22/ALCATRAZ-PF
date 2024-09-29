@@ -1,20 +1,27 @@
---[[
-    CREDITS:
-    https://stackoverflow.com/a/67877527
-]]
 
 getgenv().weighted_random = function(weights)
-    local summ = 0
-    for i, weight in pairs (weights) do
-        summ = summ + weight
+    if type(weights) ~= "table" or #weights == 0 then
+        error("Invalid input: weights must be a non-empty table.")
     end
-    if summ == 0 then return end
-    local value = summ*math.random ()
-    summ = 0
-    for i, weight in pairs (weights) do
-        summ = summ + weight
-        if value <= summ then
-            return i, weight
+
+    local totalWeight = 0
+
+    for _, weight in pairs(weights) do
+        if type(weight) ~= "number" or weight < 0 then
+            error("Invalid weight: weights must be non-negative numbers.")
+        end
+        totalWeight = totalWeight + weight
+    end
+
+    if totalWeight == 0 then return end
+
+    local randomValue = math.random() * totalWeight
+    local cumulativeWeight = 0
+
+    for index, weight in pairs(weights) do
+        cumulativeWeight = cumulativeWeight + weight
+        if randomValue <= cumulativeWeight then
+            return index, weight
         end
     end
 end
