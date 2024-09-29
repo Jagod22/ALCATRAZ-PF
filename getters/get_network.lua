@@ -1,15 +1,12 @@
 local network
-
 for _, v in next, getgc(true) do
-    if type(v) == "table" then
-        if rawget(v, "send") and rawget(v, "add") then
-            network = v
-        end
+    if type(v) == "table" and rawget(v, "send") and rawget(v, "add") then
+        network = v
+        break
     end
 end
 
 if not network then
-    return error("failed to find localplayer")
+    error("Failed to find localplayer's network object")
 end
-
 getgenv().network = network
