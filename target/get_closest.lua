@@ -1,23 +1,30 @@
+--// Improved get_closest function
 getgenv().get_closest = function()
-    local c_player, c_bodyparts, c_distance
+    local closest_player = nil
+    local closest_bodyparts = nil
+    local closest_distance = math.huge
 
-    for _, _player in next, players:GetChildren() do
-        if _player == player then continue end
-        local character = characters[_player]
-        if character then
-            local torso = character.torso
+    for _, target_player in pairs(players:GetPlayers()) do
+        if target_player == player then continue end
+
+        local character = target_player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local torso = character:FindFirstChild("HumanoidRootPart")
             if not torso then continue end
-            local v2, onscreen = get_v2(torso.Position)
+
+            local screen_pos, onscreen = camera:WorldToViewportPoint(torso.Position)
             if onscreen then
-                local distance = (get_mouse_pos() - v2).Magnitude
-                if distance <= (c_distance or config.aimbot.field_of_view and config.aimbot.field_of_view_range or 2000) then
-                    c_player = _player
-                    c_bodyparts = character
-                    c_distance = distance
+                local mouse_pos = user_input_service:GetMouseLocation()
+                local distance = (Vector2.new(screen_pos.X, screen_pos.Y) - mouse_pos).Magnitude
+                local fov = config.aimbot.field_of_view or 2000
+                if distance <= fov and distance < closest_distance then
+                    closest_player = target_player
+                    closest_bodyparts = character
+                    closest_distance = distance
                 end
             end
         end
     end
 
-    return c_player, c_bodyparts
+    return closest_player, closest_bodyparts
 end
