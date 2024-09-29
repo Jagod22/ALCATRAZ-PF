@@ -1,15 +1,13 @@
-local camera
-
+local camera = nil
 for _, v in next, getgc(true) do
-    if type(v) == "table" then
-        if rawget(v, "setswayspeed") then
-            camera = v
-        end
+    if type(v) == "table" and rawget(v, "setswayspeed") then
+        camera = v
+        break
     end
 end
 
 if not camera then
-    return error("failed to find camera")
+    error("Failed to find camera")
 end
 
 getgenv().camera = camera
