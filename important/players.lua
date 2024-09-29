@@ -1,9 +1,12 @@
-local players = game:GetService("Players")
-local player = players.LocalPlayer
-local user_input_service = game:GetService("UserInputService")
-getgenv().players = players
-getgenv().player = player
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+getgenv().Players = Players
+getgenv().LocalPlayer = LocalPlayer
+
 getgenv().get_mouse_pos = function()
-    local mouse_pos = user_input_service:GetMouseLocation()
-    return Vector2.new(mouse_pos.X, mouse_pos.Y)
+    local mousePos = UserInputService:GetMouseLocation()
+    return Vector2.new(mousePos.X, mousePos.Y)
 end
