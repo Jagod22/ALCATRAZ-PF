@@ -1,4 +1,4 @@
---// Improved get_closest function
+
 getgenv().get_closest = function()
     local closest_player = nil
     local closest_bodyparts = nil
