@@ -1,4 +1,4 @@
-local camera = nil
+local camera
 for _, v in next, getgc(true) do
     if type(v) == "table" and rawget(v, "setswayspeed") then
         camera = v
